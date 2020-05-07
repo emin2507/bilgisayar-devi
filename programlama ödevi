@@ -1,0 +1,331 @@
+/*
+hocam öncelikle oyunun kodu aşağıda var. yapılan örnekleri inceledim yurtiçi kaynaklardan adamakıllı 1 örnek bulabildim githubda,  onun haricinde google.com.au dan amerika 
+platformundan yapılan örnekleri inceledim. anlayabildiğim kadarını anlamaya çalıştım ama tabiki oturup aynısını yapamıyosan tam anlamamışsındır zaten c bilgimde yetersiz olduğundan
+düşündüğümü kodlamaya geçiremedim. baktığım örneklerden anladığım kadarıyla bir algoritma geliştirdim . aşağıda inebildiğim kadar detaylı bir şekilde de anlattım. benim asıl ödevim 
+bu algoritmadır .sınıfta kalma gibi bir durumum olmasaydı 0 alcağımıda bilsem sadece kendi yaptığım algoritmayı ödev olarak gönderirdim ama geçen dönem ortalamam 1.80 in altında olduğu
+için istemeyerekte olsa kendi algoritmamdan sonra nolur nolmaz diye kaynak kodunu internetten bulduğum kodlarıda ekledim. fonksiyonlarının ne işe yaradığınıda anladığım kadarıyla yazıdm
+bide birkaç şeyide çıkardım . öreneğin oyuna başlamadan önce ismini ve yaşını soruyodu onları çıkardım. buraya kadar kapatmadıysanız kendi algoritmama geçelim. 
+
+
+1)dizileri kullanarak bir matris oluşturucağız. bu matrisimiz 10 a 10 luk bir matris olucak çünki ödevde bunu istemişsiniz ama biz 12 ye 12 lik bir matris oluşturucaz . bunun sebebide
+komşu kareleri mayın varmı diye kontrol etmemiz mesela  her karenin etrafında 8 kare var ama kenarlarda öreniğin (2,0) karesinin etrafında eğer 10 a 10 luk bir matris oluşturursak 5 kare oluyo
+var hatta köşelerde (1,1) gibi bu sefer bu bu sayı 3 oluyor. bu yüzden kontolü daha rahat yapmamaız için daha da açıklarsam bu özel kareler için ayrı bir kod yazmaya uğraşmaktansa direk
+oyuncunun gördüğü ekrenı değilde arka planda bilgisayarın oluşturduğu ekranı 12 ye 12 yaparsak bu hem pc n in hemde bizim işimizi dahada kolaylaştırıyo
+
+2) şimdi sırada mayınları koymak var . bunu şöyle düşündüm dizimiz 1 ve 0 lardan oluşsun 85 tane 1 ve 15 tane 0 (1 ler temiz o lar bomba). ve diziyi karıştırma (shell) metoduyla
+karıştıralım ama c de böyle bir metod bulamadım pyhton da vardı ama c de bunu direk fonksiyon olarak yazmaya çalışmışlar. bu karıştırma işinde şöyle bir şeyde düşündüm eğer direk
+dizileri karıştıramıyosam bir liste oluşturup (85 tane 1 ve 15 tane 0 olucak içinde) bu listeyi karıştırıp dizinin içine atmayı da düşündüm . bu karıştırma işi bize ilerdede
+yarıycak çünki bir kontrol mekanizması düşündüm bir satırda yada sutunda en fazla 3 mayın olabilir diye bir madde vardı onun için . onuda ilerleyen kısımlarda eğer okumaya devam
+ederseniz anlatmaya çalışıcam.
+bu aşamaya kadar diziyi oluşturduk  ve içine 1 ve 0 ları rastgele bir biçimde gönderdik .şimdi sırada kontrol mekanizmaları var
+
+3) satır ve sutunları kontrol etmek için bir kontrol döngüsü oluşturucaz daha sonraki aşama ise çaprazında bomba varmı onu kontrol etmek olucak. satır ve sutunda 3 den fazla bomba 
+varmı diye kontrol etmek için şöyle bir şey düşündüm . ilk önce bir int toplam diye bir sayaç tanımlıcaz daha sonra bir for döngüsü oluşturucaz . bu for döngüsünde sırayla ilk önce 
+satırları sabit tutup sutunları arttırıcaz ve toplicaz daha sonrada sutunları sabit tutup satırları arttırıp toplicaz. bunu şöyle anlatıyım mesele for(y=1;y<11;y++) y burda sutun oluyo
+daha sonra diceki toplam = toplam + matris[1][y] . daha sonra dicezki if(toplam<7) tekrar karıştır ve başa dön değilse diyip else nin içine yeni bir for dngüsü tanımlıcaz . bu döngüdede
+yine y ler artıcak ama bu sefer toplamada matris[2][y] diyip 2. satırı toplatıcaz ve yine toplam 7 den küçükse aynı şeyler olucak . 7 yide açıklıyım şimdi bir satırda 3 den fazla bomba
+olamıyodu . bir satırda 10 sutun var ve temiz bölgelere 1 dedik yani 3 den fazla bomba olursa satır toplamı  7 den daha az olmak zorunda demek buyüzdende eğer 7 den küçükse biz
+o satırda 3 den fazla bomba olduğunu anlıyoruz. bu böyle böyle 10. satıra kadar kontrol edicez ve eğer 10 satırda da bir sorun yoksa bu sefer aynı şeyleri sutunlarada yapıcaz . biliyorum çok uzun bir çözüm 
+kodlamadada eğer bir şeyi gereğinden fazla uzun yazıyorsan yanlış yapıyosundur . muhtemelen başka bir for döngüsüyle bu işlemi çok çok daha kısaltabilriz ama maalesef kafamda o for 
+döngüsünü planlayamadım.
+
+4)şimdi gelelim çaprazında mayın olmama konusuna . bunun içinde şöyle bir şey düşündüm; rundı kullanarak pc ye dicezki bize 1 ve 0 dan birini rastgele olarak getir ve eğer getirdiğin
+sayı 1 se tek satırları kullan ,eğer 0 sa çift satırları kullan  . aynısını sutunlerı belirlemek içinde kullanıcaz ve böylece pc mayın yerleştirlicek bölgeyi rastgele bir biçimde 
+belirlicek ve böylece mayınların çapraz gelmesi engellenicek. örneğin satırları tek satır olarak belirlesin ve sutunlarıda çift saırlar olarak belirlesin ilk mayınının koordiantı 
+[5][6] olsun . çapraz koordinatlarına bktığımızda [4][4] , [4][7] ,[6][4] , [6][7] noktaları oluyo satırda tek satırları sutunda ise çift sutunları kullanmak zorunda olduğu için 
+bu koordinatlara mayın koymaıyo ve böylece çapraz gelmesinide engellemiş oluruz  
+
+etrafındaki boş kareleri açma mantığını düşünemedim yazılan kodlara baktığımdada anlayamadım
+
+5) artık geriye kullanıcıdan koordinatları alıp mayın varsa devam etmesi ve yoksa oyunun bitirilmesi ve tekrara başlaması kalıyo  
+
+bu ödevin bana kattıkları :
+dizileri ve matris sistemini daha iyi anladım algoritma geliştirme becerimin daha da arttığını düşünüyorum .for ları if leri daha iyi anlamaı da sağladı.aslında fonksiyonları neden 
+kullanmamız gerektiğinide anladım.  #include <stdlib.h> ve #include <time.h> kütüphanelerini ve farkını öğrendim.
+onuda şöyle anlatıyım bu ikisini kullanmadan rand ı kullanırsak tek bir rastgele sayı atar ve değişmez. <stdlib.h> bunu da eklersek bu sefer  srand()yazıp biz atıyoruz . mesela srand ın 
+içine 1 yazarsak pc rastgele bir sayı atar ve tekrar çalıştırırsak terka o atadığı sayıyı yazdırır taki biz srand ın içini değiştirene kadar . srandıda pc nin değitirmesini istiyosak 
+işte ozaman <time.h> kütüphanesinide eklememz lazım tabi bunu da srand(time(NULL)) yazark yapıyoruz bundan sonra her çalıştırdığımızda rastgele bir sayı atar. bunları öğrenince rund ı 
+daha iyi ve anlayarak kullanmayıda öğrendim daha ayrıntıya girebiliriz ama bu ödevin bana genel olarak kattıkları bunlar. 
+şimdi oyunun koduna geçelim
+
+*/
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <time.h>
+
+ 
+#define BOARD_SIZE 10
+#define TRUE 1
+#define FALSE 0
+
+ 
+char board[BOARD_SIZE][BOARD_SIZE];
+char uboard[BOARD_SIZE][BOARD_SIZE]; //oyun sahası
+ 
+// burda kullanıcağı fonksiyonları planlamış aşağıdada oluşturucak.
+void setupMines();
+void buildUserBoard();
+void printBoard();
+void printUserBoard();
+int findMines(int row, int column);
+int mineSweep(int row, int column);
+void setupGame();
+int winCheck();
+void win();
+void loss();
+ 
+ 
+int main(){
+ 
+    setupGame();
+    return 0;
+}
+ 
+
+ // ekranı yazdırmak için fonksiyon yapmış ama bu arkaplandaki ekran
+void printBoard(){
+ 
+ // sutun ve satır tanımlamış
+    int column, row;
+ 
+ 
+    // bu iki for döngüsünde oyun ekranındaki satır ve sutunları yazdırmışki daha rahat görelim açacığımız yeri.
+    for(column = 0; column < BOARD_SIZE ; column++)
+        printf(" %d ", column);
+    printf("\n");
+ 
+ 
+    for(row = 0; row < BOARD_SIZE; row++)
+    {
+        for(column = 0; column < BOARD_SIZE; column++)
+            printf(" %c ", board[row][column]);
+        if(row >= 0 &&  row <= BOARD_SIZE -1)
+            printf("%d", row);
+        printf("\n");
+    }
+}
+ 
+ 
+ 
+ // burdada oyuncunun göreceği ekranı oluşturuyor.
+void buildUserBoard(){
+    int column, row;
+ 
+ 
+    // açılmayan her kareye  '-' bunu göstertiyor.
+    for(column = 0; column < BOARD_SIZE; column++)
+        for(row = 0; row < BOARD_SIZE; row++)
+            uboard[column][row] = '-';
+}
+// burdada oyuncu ekranını konsola yazdırtıyor.
+void printUserBoard(){
+    int column, row;
+ 
+ 
+    system("cls");
+    
+    for(column = 0; column < BOARD_SIZE ; column++)
+        printf(" %d ", column);
+    printf("\n\n");
+ 
+ 
+    for(column = 0; column < BOARD_SIZE ; column++)
+    {
+        for(row = 0; row < BOARD_SIZE; row++)
+        {
+            printf(" %c ", uboard[column][row]);
+        }
+        if(column >= 0 &&  column <= BOARD_SIZE  )
+            printf("   %d", column);
+        printf("\n");
+    }
+ 
+ 
+}
+ 
+ 
+ 
+ 
+// burdada mayınları ayarlıyor. 
+void setupMines(){
+ 
+ 
+    int column, row;
+ 
+ 
+    for(column = 0; column < BOARD_SIZE ; column++){
+        for (row = 0; row < BOARD_SIZE ; row++)
+            board[column][row] = '-';
+    }
+ 
+ // burda da mqyın sayısını rastgele belirliyor. 
+    srand(time(0));
+    for(row = 0; row < BOARD_SIZE ; row++){
+        int random = rand() % (BOARD_SIZE );
+        board[random][row] = 'M';
+    }
+}
+// burdada anladığım kadarıyla açılan koordinatın etrafındaki 8 kareyi kontrol etmesini sağlıyor.
+int findMines(int row, int column){
+ 
+ 
+     int mines = 0;
+ 
+ 
+    // bu yukarı aşağı sağa sola bakıyo
+    if(board[row - 1][ column] == 'M')
+        mines++;
+    if(board[row + 1][ column] == 'M')
+        mines++;
+    if(board[row][ column - 1] == 'M')
+        mines++;
+    if(board[row][ column + 1] == 'M')
+        mines++;
+ 
+ 
+ 
+ 
+    // buda çaprazları kontrol ediyo
+    if(board[row - 1][ column + 1] == 'M')
+        mines++;
+    if(board[row - 1][ column - 1] == 'M')
+        mines++;
+    if(board[row + 1][ column + 1] == 'M')
+        mines++;
+    if(board[row + 1][ column - 1] == 'M')
+        mines++;
+ 
+ 
+    return mines;
+}
+ 
+ 
+//oyun kurulumu buda. 
+void setupGame(){
+ 
+ 
+    int xpos, ypos;
+ 
+ 
+    system("pause");
+    setupMines();
+    buildUserBoard();
+    printUserBoard();
+ 
+ 
+    for(;;){
+    do{ printf("\nEnter the row: ");
+        scanf("%d",&xpos);
+        printf("Enter the column: ");
+        scanf("%d",&ypos);
+        printf("\n");
+        } while(xpos < 0 || xpos > BOARD_SIZE -1 || ypos < 0 || ypos > BOARD_SIZE -1 );
+ 
+ 
+        if (board[xpos][ypos] == 'M'){
+            printf("You have hit a mine!\n\n");
+            printBoard();
+            loss();
+        }
+        else
+            mineSweep(xpos, ypos);
+ 
+ 
+    printUserBoard();
+    }
+}
+//burdada kaybettiğinde kullanıcıya devam etmek isteyip istemediğini soruyor.
+void loss(){
+ 
+ 
+    char choice;
+ 
+ 
+    scanf("%c", &choice);
+    printf("You have lost!\n\nWould you like to play again? (Y/N)--> ");
+    scanf("%c", &choice);
+    if (toupper(choice) == 'Y'){
+        system("cls");
+        setupGame();
+    }
+ 
+ 
+    else
+        printf("\nThanks for playing, bye! \n\n ");
+        exit(0);
+}
+ 
+ 
+//buradad kazanıp kazanmadığını kontrol ediyor.
+int winCheck(){
+ 
+ 
+    int column, row;
+ 
+ 
+    for(column = 1; column < BOARD_SIZE - 1; column++)
+        for(row = 1; row < BOARD_SIZE - 1; row++) {
+            if(uboard[column][row] == '-' && board[column][row] != 'M')
+                return FALSE;
+        }
+ 
+ 
+    return TRUE;
+}
+ 
+//buradad kazandığında soruyoda neden kaybedip kazanmayı ayrı ayrı yazdığını anlmadım . 2 sini aynı fonksiyondada sorgulatıp döndürebilirdi. 
+void win(){
+ 
+ 
+    char choice;
+ 
+ 
+    printf("Congratulations, you have won! \nWould you like to start another game? (Y/N)--> ");
+    scanf("%c", &choice);
+ 
+ 
+    if (toupper(choice) == 'y'){
+        system("cls");
+    }
+    else
+        exit(99);
+}
+ 
+ 
+int mineSweep(int column, int row){
+ 
+ 
+    int nearbymines = 0;
+ 
+ 
+    if( row < 0 || row >= BOARD_SIZE || column < 0 || column >= BOARD_SIZE || uboard[column][row] != '-'){
+        return 0;
+    }
+ 
+ 
+ 
+ 
+    nearbymines = findMines(column, row);
+    uboard[column][row] = (char)(((int)'0') + nearbymines);
+    //burdada yan yana olup olmadığını kontrol ediyor.
+    if (nearbymines < 1){
+        mineSweep(column, row -1);
+        mineSweep(column+1, row-1);
+        mineSweep(column+1, row);
+        mineSweep(column+1, row+1);
+        mineSweep(column, row+1);
+        mineSweep(column-1, row+1);
+        mineSweep(column-1, row);
+        mineSweep(column-1, row-1);
+    }
+ 
+ 
+ 
+ 
+    return 1;
+ 
+ 
+}
+
+
